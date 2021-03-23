@@ -2,6 +2,7 @@
 
 require "slack-ruby-client"
 require "thor"
+require "open3"
 
 class WorkDay < Thor
   include Thor::Actions
@@ -13,24 +14,9 @@ class WorkDay < Thor
   end
 
   desc "start", "Start up your PCO workday"
-  option(
-    :skip_slack,
-    type: :boolean,
-    aliases: :ss,
-    desc: "Whether to send a message to Slack or not. Default is to send a message.",
-  )
-  option(
-    :skip_update_box,
-    type: :boolean,
-    aliases: :sb,
-    desc: "Whether to update pco-box or not. Default is to update.",
-  )
-  option(
-    :skip_update_apps,
-    type: :boolean,
-    aliases: :sa,
-    desc: "Whether to update apps or not. Default is to update.",
-  )
+  option(:skip_slack, type: :boolean, aliases: :ss, desc: "Whether to send a message to Slack or not. Default is to send a message.")
+  option(:skip_update_box, type: :boolean, aliases: :sb, desc: "Whether to update pco-box or not. Default is to update.")
+  option(:skip_update_apps, type: :boolean, aliases: :sa, desc: "Whether to update apps or not. Default is to update.")
   def start
     prompt_for_slack_messaage unless options[:skip_slack]
     update_pco_box unless options[:skip_update_box]
@@ -42,6 +28,10 @@ class WorkDay < Thor
   end
 
   private
+
+  def home
+    @home ||= ENV.fetch("HOME")
+  end
 
   def prompt_for_slack_message
     slack_msg_type = ask("What kind of Slack message shall we send?", limited_to: %w[standup normal])
@@ -77,10 +67,22 @@ class WorkDay < Thor
 
   def update_pco_box
     say "⚙️  Updating pco-box", :green
+    Dir.chdir("#{home}/pco-box") do
+      run_command("git", "pull")
+      run_command("box", "update")
+    end
   end
 
   def update_apps
     say "⚙️  Updating apps", :green
+  end
+
+  def run_command(*args)
+    Open3.popen2(*args) do |stdin, stdout, status_thread|
+      while (line = stdout.gets)
+        say line
+      end
+    end
   end
 
   # A version of Thor's template that returns the rendered string instead of creating a new file.
