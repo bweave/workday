@@ -3,9 +3,30 @@
 require "slack-ruby-client"
 require "thor"
 require "open3"
+require_relative "pco_app"
 
 class WorkDay < Thor
   include Thor::Actions
+
+  APP_NAMES = %w[
+    accounts
+    api
+    avatars
+    check-ins
+    church-center
+    giving
+    groups
+    helpdesk
+    login
+    notifications
+    people
+    publishing
+    push-gateway
+    registrations
+    resources
+    services
+    webhooks
+  ].freeze
 
   package_name "WorkDay"
 
@@ -20,8 +41,10 @@ class WorkDay < Thor
   option(:run_webpack, type: :boolean, aliases: :w, desc: "Whether to run webpack when updating apps or not. Default is to skip it.")
   def start
     prompt_for_slack_messaage unless options[:skip_slack]
+    wip_apps
     update_pco_box unless options[:skip_update_box]
     update_apps(options[:run_webpack]) unless options[:skip_update_apps]
+    unwip_apps
   end
 
   desc "end", "End your PCO workday"
@@ -64,6 +87,18 @@ class WorkDay < Thor
       as_user: true,
       icon_url: "https://ca.slack-edge.com/T024L9M0Y-U5767U2TX-9007e0365f04-72",
     )
+  end
+
+  def pco_apps
+    @pco_apps ||= APP_NAMES.map { |name| PcoApp.new(name) }
+  end
+
+  def wip_apps
+    pco_apps.each(&:wip_it)
+  end
+
+  def unwip_apps
+    pco_apps.each(&:unwip_it)
   end
 
   def update_pco_box
