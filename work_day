@@ -20,11 +20,7 @@ class WorkDay < Thor
     desc: "Whether to send a message to Slack or not. Default is to send a message.",
   )
   def start
-    unless options[:skip_slack]
-      slack_msg_type = ask("What kind of Slack message shall we send?", limited_to: %w[standup normal])
-      slack_msg = slack_msg_type == "standup" ? prompt_for_standup_slack_msg : prompt_for_normal_slack_msg
-      send_to_slack(slack_msg)
-    end
+    prompt_for_slack_messaage unless options[:skip_slack]
   end
 
   desc "end", "End your PCO workday"
@@ -33,14 +29,25 @@ class WorkDay < Thor
 
   private
 
-  def prompt_for_standup_slack_msg
+  def prompt_for_slack_message
+      slack_msg_type = ask("What kind of Slack message shall we send?", limited_to: %w[standup normal])
+      slack_msg = slack_msg_type == "standup" ? prompt_for_standup_msg : prompt_for_normal_msg
+      say <<~SLACK
+        Sending to Slack:
+        #{slack_msg}
+      SLACK
+      send_to_slack(slack_msg)
+    end
+  end
+
+  def prompt_for_standup_msg
     @yesterday = ask "What happened yesterday? What went well? What didn’t?"
     @today = ask "What are you planning to work on today? Any blockers?"
     @other = ask "Anything else the team should know?"
     template_string("slack_standup.erb")
   end
 
-  def prompt_for_normal_slack_msg
+  def prompt_for_normal_msg
     ask "What would you like to say?"
   end
 
