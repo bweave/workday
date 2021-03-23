@@ -41,6 +41,7 @@ class WorkDay < Thor
   end
 
   def prompt_for_normal_slack_msg
+    ask "What would you like to say?"
   end
 
   def send_to_slack(msg)
