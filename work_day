@@ -3,30 +3,10 @@
 require "slack-ruby-client"
 require "thor"
 require "open3"
-require_relative "pco_app"
+require_relative "pco_apps"
 
 class WorkDay < Thor
   include Thor::Actions
-
-  APP_NAMES = %w[
-    accounts
-    api
-    avatars
-    check-ins
-    church-center
-    giving
-    groups
-    helpdesk
-    login
-    notifications
-    people
-    publishing
-    push-gateway
-    registrations
-    resources
-    services
-    webhooks
-  ].freeze
 
   package_name "WorkDay"
 
@@ -41,10 +21,10 @@ class WorkDay < Thor
   option(:run_webpack, type: :boolean, aliases: :w, desc: "Whether to run webpack when updating apps or not. Default is to skip it.")
   def start
     prompt_for_slack_messaage unless options[:skip_slack]
-    wip_apps
+    PcoApps.before_update
     update_pco_box unless options[:skip_update_box]
     update_apps(options[:run_webpack]) unless options[:skip_update_apps]
-    unwip_apps
+    PcoApps.after_update
   end
 
   desc "end", "End your PCO workday"
@@ -89,18 +69,6 @@ class WorkDay < Thor
     )
   end
 
-  def pco_apps
-    @pco_apps ||= APP_NAMES.map { |name| PcoApp.new(name) }
-  end
-
-  def wip_apps
-    pco_apps.each(&:wip_it)
-  end
-
-  def unwip_apps
-    pco_apps.each(&:unwip_it)
-  end
-
   def update_pco_box
     say "⚙️  Updating pco-box", :green
     Dir.chdir("#{home}/pco-box") do
@@ -119,10 +87,10 @@ class WorkDay < Thor
   def run_command(*args)
     # https://nickcharlton.net/posts/ruby-subprocesses-with-stdout-stderr-streams.html
     Open3.popen3({"NON_INTERACTIVE" => "true"}, *args) do |stdin, stdout, stderr, status_thread|
-      {out: stdout, err: stderr}.each do |key, stream|
+      [stdout, stderr].each do |stream|
         Thread.new do
           until (line = stream.gets).nil?
-            puts "#{key}: #{line}"
+            puts line
           end
         end
       end
