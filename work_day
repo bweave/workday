@@ -14,13 +14,14 @@ class WorkDay < Thor
   end
 
   desc "start", "Start up your PCO workday"
-  option(:skip_slack, type: :boolean, aliases: :ss, desc: "Whether to send a message to Slack or not. Default is to send a message.")
-  option(:skip_update_box, type: :boolean, aliases: :sb, desc: "Whether to update pco-box or not. Default is to update.")
-  option(:skip_update_apps, type: :boolean, aliases: :sa, desc: "Whether to update apps or not. Default is to update.")
+  option(:skip_slack, type: :boolean, aliases: :s, desc: "Whether to send a message to Slack or not. Default is to send a message.")
+  option(:skip_update_box, type: :boolean, aliases: :b, desc: "Whether to update pco-box or not. Default is to update.")
+  option(:skip_update_apps, type: :boolean, aliases: :a, desc: "Whether to update apps or not. Default is to update.")
+  option(:run_webpack, type: :boolean, aliases: :w, desc: "Whether to run webpack when updating apps or not. Default is to skip it.")
   def start
     prompt_for_slack_messaage unless options[:skip_slack]
     update_pco_box unless options[:skip_update_box]
-    update_apps unless options[:skip_update_apps]
+    update_apps(options[:run_webpack]) unless options[:skip_update_apps]
   end
 
   desc "end", "End your PCO workday"
@@ -73,15 +74,25 @@ class WorkDay < Thor
     end
   end
 
-  def update_apps
+  def update_apps(run_webpack)
     say "⚙️  Updating apps", :green
+    args = %w[box update-apps --auto-master]
+    args << "--skip-webpack" unless run_webpack
+    run_command(*args)
   end
 
   def run_command(*args)
-    Open3.popen2(*args) do |stdin, stdout, status_thread|
-      while (line = stdout.gets)
-        say line
+    # https://nickcharlton.net/posts/ruby-subprocesses-with-stdout-stderr-streams.html
+    Open3.popen3({"NON_INTERACTIVE" => "true"}, *args) do |stdin, stdout, stderr, status_thread|
+      {out: stdout, err: stderr}.each do |key, stream|
+        Thread.new do
+          until (line = stream.gets).nil?
+            puts "#{key}: #{line}"
+          end
+        end
       end
+
+      status_thread.join
     end
   end
 
