@@ -7,6 +7,7 @@ class PostToSlack
 
   def initialize
     @client = Slack::Web::Client.new(token: ENV.fetch("SLACK_API_TOKEN"))
+    @channel = ENV.fetch("SLACK_CHANNEL")
   end
 
   def call
@@ -25,6 +26,7 @@ class PostToSlack
   private
 
   attr_reader :client
+  attr_reader :channel
 
   def prompt_for_message_type
     ask("What kind of Slack message shall we send?([s]tandup [n]ormal)")
@@ -43,7 +45,7 @@ class PostToSlack
 
   def post(message)
     client.chat_postMessage(
-      channel: "@bweave",
+      channel: channel,
       text: message,
       as_user: true,
       icon_url: "https://ca.slack-edge.com/T024L9M0Y-U5767U2TX-9007e0365f04-72",
