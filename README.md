@@ -18,11 +18,17 @@ Start and end your workday at Planning Center with this handy little command lin
 
 ### Setup
 
-You'll need to setup two environment variables. Add these to your `.bashrc` or `.zshrc`.
+You'll need to setup some environment variables. Add these to your `.bashrc` or `.zshrc`.
+
+```sh
+export SLACK_CHANNEL=MY_SLACK_CHANNEL_OF_CHOICE
+export SLACK_ICON_URL=https://example.com/some-sweet-icon.png"
+```
+
+And add this to something like `~/.secrets` that's NOT included in your public dotfiles repo. 😉
 
 ```sh
 export SLACK_API_TOKEN=MY_API_TOKEN
-export SLACK_CHANNEL=MY_SLACK_CHANNEL_OF_CHOICE
 ```
 
 You can obtain a Slack API token [here](https://api.slack.com/custom-integrations/legacy-tokens).

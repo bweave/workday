@@ -48,7 +48,7 @@ class PostToSlack
       channel: channel,
       text: message,
       as_user: true,
-      icon_url: "https://ca.slack-edge.com/T024L9M0Y-U5767U2TX-9007e0365f04-72",
+      icon_url: ENV.fetch("SLACK_ICON_URL", ""),
     )
   end
 end
