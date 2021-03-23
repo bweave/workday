@@ -1,0 +1,67 @@
+#!/usr/bin/env ruby
+
+require "slack-ruby-client"
+require "thor"
+
+class StartWorkDay < Thor
+  include Thor::Actions
+
+  package_name "StartWorkDay"
+  default_task :main
+
+  def self.source_root
+    File.expand_path(__dir__)
+  end
+
+  option :skip_slack, type: :boolean, aliases: :s
+  desc "Start up your PCO workday", "Does what it says on the tin."
+  def main
+    unless options[:skip_slack]
+      slack_msg_type = ask("What kind of Slack message shall we send?", limited_to: %w[standup normal])
+      slack_msg = slack_msg_type == "standup" ? prompt_for_standup_slack_msg : prompt_for_normal_slack_msg
+      send_to_slack(slack_msg)
+    end
+  end
+
+  private
+
+  def prompt_for_standup_slack_msg
+    @yesterday = ask "What happened yesterday? What went well? What didn’t?"
+    @today = ask "What are you planning to work on today? Any blockers?"
+    @other = ask "Anything else the team should know?"
+    template_string("slack_standup.erb")
+  end
+
+  def prompt_for_normal_slack_msg
+  end
+
+  def send_to_slack(msg)
+    slack = Slack::Web::Client.new(token: ENV.fetch("SLACK_API_TOKEN"))
+    slack.auth_test
+    slack.chat_postMessage(
+      channel: "@bweave",
+      text: msg,
+      as_user: true,
+      icon_url: "https://ca.slack-edge.com/T024L9M0Y-U5767U2TX-9007e0365f04-72",
+    )
+  end
+
+  # A version of Thor's template that returns the rendered string instead of creating a new file.
+  # Copied from https://github.com/erikhuda/thor/blob/011dc48b5ea92767445b062f971664235973c8b4/lib/thor/actions/file_manipulation.rb#L115
+  def template_string(source, *args, &block)
+    config = args.last.is_a?(Hash) ? args.pop : {}
+
+    source = File.expand_path(find_in_source_paths(source.to_s))
+    context = config.delete(:context) || instance_eval("binding") # rubocop: disable Style/EvalWithLocation
+
+    # Assume Ruby 2.6+
+    capturable_erb = CapturableERB.new(::File.binread(source), trim_mode: "-", eoutvar: "@output_buffer")
+    content = capturable_erb.tap do |erb|
+      erb.filename = source
+    end.result(context)
+    content = yield(content) if block
+    content
+  end
+end
+
+StartWorkDay.start(ARGV)
