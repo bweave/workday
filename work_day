@@ -3,24 +3,32 @@
 require "slack-ruby-client"
 require "thor"
 
-class StartWorkDay < Thor
+class WorkDay < Thor
   include Thor::Actions
 
-  package_name "StartWorkDay"
-  default_task :main
+  package_name "WorkDay"
 
   def self.source_root
     File.expand_path(__dir__)
   end
 
-  option :skip_slack, type: :boolean, aliases: :s
-  desc "Start up your PCO workday", "Does what it says on the tin."
-  def main
+  desc "start", "Start up your PCO workday"
+  option(
+    :skip_slack,
+    type: :boolean,
+    aliases: :s,
+    desc: "Whether to send a message to Slack or not. Default is to send a message.",
+  )
+  def start
     unless options[:skip_slack]
       slack_msg_type = ask("What kind of Slack message shall we send?", limited_to: %w[standup normal])
       slack_msg = slack_msg_type == "standup" ? prompt_for_standup_slack_msg : prompt_for_normal_slack_msg
       send_to_slack(slack_msg)
     end
+  end
+
+  desc "end", "End your PCO workday"
+  def end
   end
 
   private
@@ -64,4 +72,4 @@ class StartWorkDay < Thor
   end
 end
 
-StartWorkDay.start(ARGV)
+WorkDay.start(ARGV)
