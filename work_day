@@ -57,10 +57,24 @@ class WorkDay < Thor
   desc "config", "Displays your currently configured prefs"
   def config
     config = read_config
+    display_slack_config(config["slack"])
     display_other_apps_config(config["other_apps"])
   end
 
   private
+
+  def display_slack_config(slack)
+    table = TTY::Table.new(header: %w[Channel Icon]) { |t|
+      t << [slack["channel"], slack["icon_url"]]
+    }
+
+    say "Slack config:"
+    puts table.render(:unicode) { |r|
+      r.border.separator = :each_row
+      r.padding = [0, 1]
+      r.resize = true
+    }
+  end
 
   def display_other_apps_config(other_apps)
     pastel = Pastel.new

@@ -1,4 +1,8 @@
 {
+  "slack": {
+    "channel": "",
+    "icon_url": ""
+  },
   "other_apps": [
     { "name": "Brave", "enabled": false },
     { "name": "Emacs", "enabled": false },
