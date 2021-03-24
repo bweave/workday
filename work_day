@@ -3,6 +3,7 @@
 require "thor"
 require "open3"
 require "tty-prompt"
+require "tty-table"
 require_relative "pco_apps"
 require_relative "post_to_slack"
 require_relative "pco_box"
@@ -53,7 +54,30 @@ class WorkDay < Thor
     write_config(config)
   end
 
+  desc "config", "Displays your currently configured prefs"
+  def config
+    config = read_config
+    display_other_apps_config(config["other_apps"])
+  end
+
   private
+
+  def display_other_apps_config(other_apps)
+    pastel = Pastel.new
+    table = TTY::Table.new(header: %w[Name Enabled]) { |t|
+      other_apps.each { |a| t << [a["name"], a["enabled"]] }
+    }
+
+    say "Apps to start your day with:"
+    puts table.render(:unicode) { |r|
+      r.border.separator = :each_row
+      r.padding = [0, 1]
+      r.resize = true
+      r.filter = ->(val, row_index, col_index) do
+        col_index == 1 && val.strip == "true" ? pastel.black.on_green(val) : val
+      end
+    }
+  end
 
   def select_apps_to_start_day_with
     enabled_apps = OtherApps.enabled.map(&:name)
