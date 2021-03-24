@@ -1,6 +1,11 @@
 require "thor"
+require "date"
 
 module Utils
+  def friday?
+    Date.today.wday == 5
+  end
+
   # A version of Thor's template that returns the rendered string instead of creating a new file.
   # Copied from https://github.com/erikhuda/thor/blob/011dc48b5ea92767445b062f971664235973c8b4/lib/thor/actions/file_manipulation.rb#L115
   def template_string(source, *args, &block)

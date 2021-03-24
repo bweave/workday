@@ -32,9 +32,8 @@ class PostToSlack
   end
 
   def end_day
-    # TODO: it would be nice to have the default account for weekends.
-    # For example: 👋 Cya tomorrow! vs. 👋 Have a great weekend!
-    post ask("How would you like to sign off?", default: "👋 Cya folks!")
+    default = friday? ? "👋 Have a great weekend!" : "👋 Cya tomorrow!"
+    post ask("How would you like to sign off?", default: default)
   end
 
   private
