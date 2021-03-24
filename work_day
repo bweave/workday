@@ -27,9 +27,10 @@ class WorkDay < Thor
   end
 
   desc "end", "End your PCO workday"
+  option(:skip_box_stop, type: :boolean, aliases: :b, desc: "Whether to stop pco-box or not. Default is to stop.")
   def end
     PostToSlack.end_day unless options[:skip_slack]
-    PcoBox.stop
+    PcoBox.stop unless options[:skip_box_stop]
     # offer to wip commit uncommitted work?
     # offer to push up branch to github if it's not already?
   end
