@@ -44,13 +44,17 @@ class WorkDay < Thor
 
   desc "configure", "Configure prefs for work_day"
   def configure
+    config = read_config
+
+    slack = setup_slack(config["slack"])
     selected_apps = select_apps_to_start_day_with
 
-    config = read_config
+    config["slack"] = slack
     config["other_apps"].each do |app|
       next unless selected_apps.include?(app["name"])
       app["enabled"] = true
     end
+    say "✅ Config updated."
     write_config(config)
   end
 
@@ -91,6 +95,19 @@ class WorkDay < Thor
         col_index == 1 && val.strip == "true" ? pastel.black.on_green(val) : val
       end
     }
+  end
+
+  def setup_slack(config)
+    prompt = TTY::Prompt.new
+    if ENV.fetch("SLACK_API_TOKEN", "").empty?
+      prompt.warn "You'll need to setup and Environment variable `SLACK_API_TOKEN`."
+      prompt.say "You can obtain a Slack API token here: https://api.slack.com/custom-integrations/legacy-tokens."
+      prompt.say "Check the README for more info."
+      prompt.keypress("When you've done that, press enter to continue", keys: [:return])
+    end
+    config["channel"] = prompt.ask("What is your team's Slack channel (For example: #cca-publishing-team)?", value: config["channel"])
+    config["icon_url"] = prompt.ask("What's the URL to the icon you'd like to use when posting messages? (Optional)", value: config["icon_url"])
+    config
   end
 
   def select_apps_to_start_day_with

@@ -9,6 +9,7 @@ Start and end your workday at Planning Center with this handy little command lin
 - Update `pco-box`
 - Update Planning Center apps to latest code
 - Handles wip/unwip committing uncommitted work on feature branches, in case you forgot. This helps avoid annoying "Git borked..." messages when updating apps.
+- Allows opening/closing additional apps for your workday, e.g. VSCode, Trello, etc.
 - Sign off in Slack at the end of your day, and shut down `pco-box`
 
 ### Installation
@@ -17,6 +18,8 @@ Start and end your workday at Planning Center with this handy little command lin
 2. `bundle install`
 
 ### Setup
+
+First, copy `config.example.json` to `config.json`.
 
 You'll need to setup some environment variables. Add these to your `.bashrc` or `.zshrc`.
 
@@ -55,6 +58,4 @@ work_day help
 
 ### TODO
 
-- [ ] Add a command to setup configuration, e.g. Slack token & channel, other prefs, etc.
-- [ ] Offer the option to open/close additional apps, e.g. VSCode, Trello, etc.
 - [ ] Offer the option to handle pco-box in the ☁
