@@ -2,12 +2,15 @@
 
 require "thor"
 require "open3"
+require "tty-prompt"
 require_relative "pco_apps"
 require_relative "post_to_slack"
 require_relative "pco_box"
+require_relative "utils"
 
 class WorkDay < Thor
   include Thor::Actions
+  include Utils
 
   package_name "WorkDay"
 
@@ -33,6 +36,18 @@ class WorkDay < Thor
     PcoBox.stop unless options[:skip_box_stop]
     # offer to wip commit uncommitted work?
     # offer to push up branch to github if it's not already?
+  end
+
+  desc "configure", "Configure prefs for work_day"
+  def configure
+    config = read_config
+    app_names = config["other_apps"].map { |a| a["name"] }
+    selected = TTY::Prompt.new.multi_select("Select apps you'd like to start your day with?", app_names)
+    config["other_apps"].each do |app|
+      next unless selected.include?(app["name"])
+      app["enabled"] = true
+    end
+    write_config(config)
   end
 end
 
