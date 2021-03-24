@@ -9,6 +9,10 @@ class PcoBox
     new.update_apps(run_webpack)
   end
 
+  def self.start
+    new.start
+  end
+
   def self.stop
     new.stop
   end
@@ -30,6 +34,11 @@ class PcoBox
     args = %w[box update-apps --auto-master]
     args << "--skip-webpack" unless run_webpack
     run_command(*args)
+  end
+
+  def start
+    say "⚙️  starting box", :green
+    run_command("box", "start")
   end
 
   def stop

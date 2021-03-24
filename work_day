@@ -23,6 +23,7 @@ class WorkDay < Thor
     PcoBox.update unless options[:skip_update_box]
     PcoBox.update_apps(options[:run_webpack]) unless options[:skip_update_apps]
     PcoApps.after_update unless options[:skip_update_apps]
+    PcoBox.start if options[:skip_update_box] && options[:skip_update_apps]
   end
 
   desc "end", "End your PCO workday"
