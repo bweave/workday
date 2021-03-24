@@ -4,6 +4,7 @@ require "thor"
 require "open3"
 require_relative "pco_apps"
 require_relative "post_to_slack"
+require_relative "pco_box"
 
 class WorkDay < Thor
   include Thor::Actions
@@ -12,10 +13,6 @@ class WorkDay < Thor
 
   class_option(:skip_slack, type: :boolean, aliases: :s, desc: "Whether to send a message to Slack or not. Default is to send a message.")
 
-  def self.source_root
-    File.expand_path(__dir__)
-  end
-
   desc "start", "Start up your PCO workday"
   option(:skip_update_box, type: :boolean, aliases: :b, desc: "Whether to update pco-box or not. Default is to update.")
   option(:skip_update_apps, type: :boolean, aliases: :a, desc: "Whether to update apps or not. Default is to update.")
@@ -23,8 +20,8 @@ class WorkDay < Thor
   def start
     PostToSlack.start_day unless options[:skip_slack]
     PcoApps.before_update unless options[:skip_update_apps]
-    update_pco_box unless options[:skip_update_box]
-    update_apps(options[:run_webpack]) unless options[:skip_update_apps]
+    PcoBox.update unless options[:skip_update_box]
+    PcoBox.update_apps(options[:run_webpack]) unless options[:skip_update_apps]
     PcoApps.after_update unless options[:skip_update_apps]
   end
 
@@ -35,42 +32,6 @@ class WorkDay < Thor
     # shutdown pco-box
     # offer to wip commit uncommitted work?
     # offer to push up branch to github if it's not already?
-  end
-
-  private
-
-  def home
-    @home ||= ENV.fetch("HOME")
-  end
-
-  def update_pco_box
-    say "⚙️  Updating pco-box", :green
-    Dir.chdir("#{home}/pco-box") do
-      run_command("git", "pull")
-      run_command("box", "update")
-    end
-  end
-
-  def update_apps(run_webpack)
-    say "⚙️  Updating apps", :green
-    args = %w[box update-apps --auto-master]
-    args << "--skip-webpack" unless run_webpack
-    run_command(*args)
-  end
-
-  def run_command(*args)
-    # https://nickcharlton.net/posts/ruby-subprocesses-with-stdout-stderr-streams.html
-    Open3.popen3({"NON_INTERACTIVE" => "true"}, *args) do |stdin, stdout, stderr, status_thread|
-      [stdout, stderr].each do |stream|
-        Thread.new do
-          until (line = stream.gets).nil?
-            puts line
-          end
-        end
-      end
-
-      status_thread.join
-    end
   end
 end
 
