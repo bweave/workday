@@ -9,6 +9,10 @@ class PcoBox
     new.update_apps(run_webpack)
   end
 
+  def self.stop
+    new.stop
+  end
+
   def initialize
     @home = ENV.fetch("HOME")
   end
@@ -26,6 +30,11 @@ class PcoBox
     args = %w[box update-apps --auto-master]
     args << "--skip-webpack" unless run_webpack
     run_command(*args)
+  end
+
+  def stop
+    say "⚙️  shutting down box", :green
+    run_command("box", "stop")
   end
 
   private
