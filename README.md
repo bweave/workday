@@ -52,3 +52,9 @@ Check out the help for more info on options:
 ```sh
 work_day help
 ```
+
+### TODO
+
+- [ ] Add a command to setup configuration, e.g. Slack token & channel, other prefs, etc.
+- [ ] Offer the option to open/close additional apps, e.g. VSCode, Trello, etc.
+- [ ] Offer the option to handle pco-box in the ☁
