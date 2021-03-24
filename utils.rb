@@ -1,9 +1,20 @@
 require "thor"
 require "date"
+require "json"
 
 module Utils
+  CONFIG_FILE = File.join(__dir__, "config.json").freeze
+
   def friday?
     Date.today.wday == 5
+  end
+
+  def read_config
+    JSON.parse(File.read(CONFIG_FILE))
+  end
+
+  def write_config(config_hash)
+    File.write(CONFIG_FILE, JSON.dump(config_hash))
   end
 
   # A version of Thor's template that returns the rendered string instead of creating a new file.

@@ -1,0 +1,22 @@
+{
+  "other_apps": [
+    { "name": "Brave", "enabled": false },
+    { "name": "Emacs", "enabled": false },
+    { "name": "Firefox", "enabled": false },
+    { "name": "Firefox Developer Edition", "enabled": false },
+    { "name": "Google Chrome", "enabled": false },
+    { "name": "iTerm", "enabled": false },
+    { "name": "Macvim", "enabled": false },
+    { "name": "Paw", "enabled": false },
+    { "name": "Safari", "enabled": false },
+    { "name": "Sequel Pro", "enabled": false },
+    { "name": "Slack", "enabled": false },
+    { "name": "Spotify", "enabled": false },
+    { "name": "Sublime Text", "enabled": false },
+    { "name": "TablePlus", "enabled": false },
+    { "name": "Terminal", "enabled": false },
+    { "name": "Things", "enabled": false },
+    { "name": "Trello", "enabled": false },
+    { "name": "Visual Studio Code", "enabled": false }
+  ]
+}
