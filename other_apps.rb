@@ -11,8 +11,16 @@ module OtherApps
     all.select(&:enabled?)
   end
 
-  def self.start
-    all.each(&:start)
+  def self.disabled
+    all.select(&:disabled?)
+  end
+
+  def self.open
+    all.each(&:open)
+  end
+
+  def self.close
+    all.each(&:close)
   end
 
   class App

@@ -6,6 +6,7 @@ require "tty-prompt"
 require_relative "pco_apps"
 require_relative "post_to_slack"
 require_relative "pco_box"
+require_relative "other_apps"
 require_relative "utils"
 
 class WorkDay < Thor
@@ -27,6 +28,7 @@ class WorkDay < Thor
     PcoBox.update_apps(options[:run_webpack]) unless options[:skip_update_apps]
     PcoApps.after_update unless options[:skip_update_apps]
     PcoBox.start if options[:skip_update_box] && options[:skip_update_apps]
+    OtherApps.open
   end
 
   desc "end", "End your PCO workday"
@@ -34,20 +36,29 @@ class WorkDay < Thor
   def end
     PostToSlack.end_day unless options[:skip_slack]
     PcoBox.stop unless options[:skip_box_stop]
+    OtherApps.close
     # offer to wip commit uncommitted work?
     # offer to push up branch to github if it's not already?
   end
 
   desc "configure", "Configure prefs for work_day"
   def configure
+    selected_apps = select_apps_to_start_day_with
+
     config = read_config
-    app_names = config["other_apps"].map { |a| a["name"] }
-    selected = TTY::Prompt.new.multi_select("Select apps you'd like to start your day with?", app_names)
     config["other_apps"].each do |app|
-      next unless selected.include?(app["name"])
+      next unless selected_apps.include?(app["name"])
       app["enabled"] = true
     end
     write_config(config)
+  end
+
+  private
+
+  def select_apps_to_start_day_with
+    enabled_apps = OtherApps.enabled.map(&:name)
+    all_apps = OtherApps.all.map(&:name)
+    TTY::Prompt.new.multi_select("Select apps you'd like to start your day with?", all_apps, default: enabled_apps)
   end
 end
 
