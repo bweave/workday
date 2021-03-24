@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 
-require "slack-ruby-client"
 require "thor"
 require "open3"
 require_relative "pco_apps"
@@ -11,17 +10,18 @@ class WorkDay < Thor
 
   package_name "WorkDay"
 
+  class_option(:skip_slack, type: :boolean, aliases: :s, desc: "Whether to send a message to Slack or not. Default is to send a message.")
+
   def self.source_root
     File.expand_path(__dir__)
   end
 
   desc "start", "Start up your PCO workday"
-  option(:skip_slack, type: :boolean, aliases: :s, desc: "Whether to send a message to Slack or not. Default is to send a message.")
   option(:skip_update_box, type: :boolean, aliases: :b, desc: "Whether to update pco-box or not. Default is to update.")
   option(:skip_update_apps, type: :boolean, aliases: :a, desc: "Whether to update apps or not. Default is to update.")
   option(:run_webpack, type: :boolean, aliases: :w, desc: "Whether to run webpack when updating apps or not. Default is to skip it.")
   def start
-    PostToSlack.new.call unless options[:skip_slack]
+    PostToSlack.start_day unless options[:skip_slack]
     PcoApps.before_update unless options[:skip_update_apps]
     update_pco_box unless options[:skip_update_box]
     update_apps(options[:run_webpack]) unless options[:skip_update_apps]
@@ -30,6 +30,11 @@ class WorkDay < Thor
 
   desc "end", "End your PCO workday"
   def end
+    # sign off in Slack
+    PostToSlack.end_day unless options[:skip_slack]
+    # shutdown pco-box
+    # offer to wip commit uncommitted work?
+    # offer to push up branch to github if it's not already?
   end
 
   private
