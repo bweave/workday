@@ -9,7 +9,7 @@ Start and end your workday at Planning Center with this handy little command lin
 - Update `pco-box`
 - Update Planning Center apps to latest code
 - Handles wip/unwip committing uncommitted work on feature branches, in case you forgot. This helps avoid annoying "Git borked..." messages when updating apps.
-- TODO: ending the day
+- Sign off in Slack at the end of your day, and shut down `pco-box`
 
 ### Installation
 

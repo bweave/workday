@@ -28,9 +28,7 @@ class WorkDay < Thor
 
   desc "end", "End your PCO workday"
   def end
-    # sign off in Slack
     PostToSlack.end_day unless options[:skip_slack]
-    # shutdown pco-box
     PcoBox.stop
     # offer to wip commit uncommitted work?
     # offer to push up branch to github if it's not already?
