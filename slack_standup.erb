@@ -1,5 +1,5 @@
 :thought_balloon: <%= @yesterday %>
 :spiral_note_pad: <%= @today %>
-<% if @other -%>
+<% unless @other.empty? -%>
 :mega: <%= @other %>
 <% end %>
