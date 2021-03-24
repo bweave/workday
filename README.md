@@ -19,22 +19,18 @@ Start and end your workday at Planning Center with this handy little command lin
 
 ### Setup
 
-First, copy `config.example.json` to `config.json`.
+1. Copy `config.example.json` to `config.json`.
+2. Run `work_day configure` to set your prefs.
 
-You'll need to setup some environment variables. Add these to your `.bashrc` or `.zshrc`.
+### Slack API Token
 
-```sh
-export SLACK_CHANNEL=MY_SLACK_CHANNEL_OF_CHOICE
-export SLACK_ICON_URL=https://example.com/some-sweet-icon.png"
-```
+You can obtain a Slack API token [here](https://api.slack.com/custom-integrations/legacy-tokens).
 
-And add this to something like `~/.secrets` that's NOT included in your public dotfiles repo. 😉
+And add this to something like `~/.secrets` that's NOT included in your public dotfiles repo. 😉 Make sure `~/.secrets` is `source`-ed by your `.bashrc` or `.zshrc`.
 
 ```sh
 export SLACK_API_TOKEN=MY_API_TOKEN
 ```
-
-You can obtain a Slack API token [here](https://api.slack.com/custom-integrations/legacy-tokens).
 
 ### Usage
 
