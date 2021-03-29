@@ -54,4 +54,11 @@ work_day help
 
 ### TODO
 
+- [ ] Make this thing a gem instead of a hand-rolled joby
+- [ ] Use TTY components everywhere. Implement a base clase to inherit from like the TTY Command class.
 - [ ] Offer the option to handle pco-box in the ☁
+  - create tmux session but don't attach, if needed: `tmux new-session -d -s foobar`
+  - `ssh pco_box_cloud9 -t "tmux send-keys \"cd ~/pco-box && git pull\" Enter"`
+- [ ] Manage Do Not Disturb for MacOS and Ubuntu
+  - https://github.com/joshpetit/toggle_dnd/blob/master/toggle_dnd
+  - https://apple.stackexchange.com/questions/145487/how-to-enable-disable-do-not-disturb-from-shell-on-mavericks
