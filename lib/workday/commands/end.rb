@@ -26,7 +26,7 @@ module Workday
 
       def signoff_message
         default = friday? ? "👋 Have a great weekend!" : "👋 Cya tomorrow!"
-        prompt.ask("Signoff message:", value: default)
+        prompt.ask("Signoff message:", default: default, help_color: :cyan)
       end
 
       def friday?

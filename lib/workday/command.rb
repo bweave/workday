@@ -17,7 +17,7 @@ module Workday
 
     def prompt(**options)
       require "tty-prompt"
-      TTY::Prompt.new(options)
+      TTY::Prompt.new({help_color: :cyan}.merge(options))
     end
 
     def slack_client
