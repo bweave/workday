@@ -11,12 +11,14 @@ module Workday
           @config = configurator
         end
 
-        def execute(input: $stdin, output: $stdout)
-          # TODO: maybe use tty-pager for this output?
-          prompt.ok "Slack"
-          output.puts show_slack
-          prompt.ok "Other Apps:"
-          output.puts show_other_apps
+        def execute
+          output = <<~OUT
+            Slack:
+            #{show_slack}
+            Other Apps:
+            #{show_other_apps}
+          OUT
+          pager.page output
         end
 
         private

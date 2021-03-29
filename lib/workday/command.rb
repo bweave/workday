@@ -10,6 +10,11 @@ module Workday
       config
     end
 
+    def pager
+      require "tty-pager"
+      TTY::Pager.new
+    end
+
     def pastel
       require "pastel"
       Pastel.new
