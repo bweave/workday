@@ -19,9 +19,8 @@ module Workday
       if options[:help]
         invoke :help, ["start"]
       else
-        # require_relative "commands/start"
-        # Workday::Commands::Start.new(options).execute
-        puts "OK"
+        require_relative "commands/start"
+        Workday::Commands::Start.new(options).execute
       end
     end
 
@@ -31,9 +30,8 @@ module Workday
       if options[:help]
         invoke :help, ["end"]
       else
-        # require_relative "commands/end
-        # Workday::Commands::End.new(options).execute
-        puts "OK"
+        require_relative "commands/end"
+        Workday::Commands::End.new(options).execute
       end
     end
 
