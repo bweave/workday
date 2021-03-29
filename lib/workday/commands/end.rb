@@ -25,7 +25,8 @@ module Workday
       attr_reader :options
 
       def signoff_message
-        friday? ? "👋 Have a great weekend!" : "👋 Cya tomorrow!"
+        default = friday? ? "👋 Have a great weekend!" : "👋 Cya tomorrow!"
+        prompt.ask("Signoff message:", value: default)
       end
 
       def friday?

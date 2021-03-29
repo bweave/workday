@@ -25,6 +25,11 @@ module Workday
       @slack_client ||= Slack::Web::Client.new(token: ENV.fetch("SLACK_API_TOKEN"))
     end
 
+    def spinner(format: "dots")
+      require "tty-spinner"
+      TTY::Spinner.new(format: format)
+    end
+
     def table
       require "tty-table"
       TTY::Table

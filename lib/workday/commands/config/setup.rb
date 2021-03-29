@@ -28,7 +28,13 @@ module Workday
 
         def setup_slack
           ensure_slack_api_token_present
-          channel = prompt.ask("What is your team's Slack channel (For example: #cca-publishing-team)?", value: config.fetch(:slack, :channel))
+          channels = []
+          spinner.run do
+            slack_client.conversations_list(exclude_archived: true, limit: 100, types: "public_channel,private_channel,mpim,im") do |resp|
+              channels << resp.channels
+            end
+          end
+          channel = prompt.select("Select your team's Slack channel:", channels, default: config.fetch(:slack, :channel), filter: true)
           icon_url = prompt.ask("What's the URL to the icon you'd like to use when posting messages? (Optional)", value: config.fetch(:slack, :icon_url))
           {channel: channel, icon_url: icon_url}
         end

@@ -13,7 +13,7 @@ module Workday
       end
 
       def execute
-        channel = options["channel"] || config["channel"]
+        channel = options["channel"] || config["channel"] || prompt_for_channel
         message = options["message"] || prompt_for_message
         post_message(channel, message)
       end
@@ -23,6 +23,16 @@ module Workday
       attr_reader :options
       attr_reader :client
       attr_reader :config
+
+      def prompt_for_channel
+        channels = []
+        spinner.run do
+          client.conversations_list(exclude_archived: true, limit: 100, types: "public_channel,private_channel,mpim,im") do |resp|
+            channels << resp.channels
+          end
+        end
+        prompt.select("Channel:", channels, filter: true)
+      end
 
       def prompt_for_message
         case prompt.select("Send a standup or regular message?", %w[Standup Normal])
