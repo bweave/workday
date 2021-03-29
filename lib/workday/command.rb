@@ -2,7 +2,12 @@ module Workday
   class Command
     def configurator
       require "tty-config"
-      TTY::Config.new
+      config = TTY::Config.new
+      config.filename = "config"
+      config.extname = ".json"
+      config.append_path Dir.pwd
+      config.read
+      config
     end
 
     def pastel

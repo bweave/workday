@@ -9,10 +9,6 @@ module Workday
         def initialize(options)
           @options = options
           @config = configurator
-          config.filename = "config"
-          config.extname = ".json"
-          config.append_path Dir.pwd
-          config.read
         end
 
         def execute(input: $stdin, output: $stdout)
