@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "../command"
+require_relative "slack"
 
 module Workday
   module Commands
@@ -9,8 +10,9 @@ module Workday
         @options = options
       end
 
-      def execute(input: $stdin, output: $stdout)
+      def execute
         # Post to Slack
+        Slack.new({}).execute unless options["skip_slack"]
         # Disable DND
         # WIP any uncommitted work in PCO apps
         # Box update

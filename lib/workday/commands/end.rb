@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+require "date"
 require_relative "../command"
+require_relative "slack"
 
 module Workday
   module Commands
@@ -11,6 +13,7 @@ module Workday
 
       def execute(input: $stdin, output: $stdout)
         # Post to Slack
+        Slack.new("message" => signoff_message).execute unless options["skip_slack"]
         # Enable DND
         # Box stop
         # Close additional apps
@@ -20,6 +23,14 @@ module Workday
       private
 
       attr_reader :options
+
+      def signoff_message
+        friday? ? "👋 Have a great weekend!" : "👋 Cya tomorrow!"
+      end
+
+      def friday?
+        Date.today.wday == 5
+      end
     end
   end
 end

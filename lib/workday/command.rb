@@ -20,6 +20,11 @@ module Workday
       TTY::Prompt.new(options)
     end
 
+    def slack_client
+      require "slack-ruby-client"
+      @slack_client ||= Slack::Web::Client.new(token: ENV.fetch("SLACK_API_TOKEN"))
+    end
+
     def table
       require "tty-table"
       TTY::Table

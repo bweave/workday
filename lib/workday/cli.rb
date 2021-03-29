@@ -15,6 +15,7 @@ module Workday
 
     desc "start", "Start your Planning Center work day"
     method_option :help, aliases: "-h", type: :boolean, desc: "Display usage information"
+    method_option :skip_slack, type: :boolean, aliases: "-s", desc: "Skip sending a message to Slack"
     def start
       if options[:help]
         invoke :help, ["start"]
@@ -37,5 +38,18 @@ module Workday
 
     require_relative "commands/config"
     register Workday::Commands::Config, "config", "config [SUBCOMMAND]", "Manage configuration option"
+
+    desc "slack", "Post a Slack message"
+    method_option :help, aliases: "-h", type: :boolean, desc: "Display usage information"
+    method_option :channel, aliases: "-c", type: :string, desc: "Channel to post in"
+    method_option :message, aliases: "-m", type: :string, desc: "Message to post"
+    def slack
+      if options[:help]
+        invoke :help, ["slack"]
+      else
+        require_relative "commands/slack"
+        Workday::Commands::Slack.new(options).execute
+      end
+    end
   end
 end
