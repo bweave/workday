@@ -30,6 +30,9 @@ module Workday
 
     desc "end", "End your Planning Center work day"
     method_option :help, aliases: "-h", type: :boolean, desc: "Display usage information"
+    method_option :skip_slack, type: :boolean, aliases: "-s", desc: "Skip sending a message to Slack"
+    method_option :skip_apps_close, type: :boolean, aliases: "-a", desc: "Skip close additional apps"
+    method_option :skip_box_stop, type: :boolean, aliases: "-b", desc: "Skip box stop"
     def end
       if options[:help]
         invoke :help, ["end"]

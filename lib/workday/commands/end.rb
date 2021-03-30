@@ -2,6 +2,8 @@
 
 require "date"
 require_relative "../command"
+require_relative "../additional_apps"
+require_relative "../pco_box"
 require_relative "slack"
 
 module Workday
@@ -11,13 +13,12 @@ module Workday
         @options = options
       end
 
-      def execute(input: $stdin, output: $stdout)
-        # Post to Slack
+      def execute
         Slack.new("message" => signoff_message).execute unless options["skip_slack"]
         # Enable DND
-        # Box stop
-        # Close additional apps
-        prompt.say "END"
+        PcoBox.stop unless options[:skip_box_stop]
+        AdditionalApps.close unless options[:skip_apps_close]
+        prompt.say "👋 Until next time.", color: :on_bright_green
       end
 
       private

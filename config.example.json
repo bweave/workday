@@ -3,7 +3,7 @@
     "channel": "",
     "icon_url": ""
   },
-  "other_apps": [
+  "additional_apps": [
     { "name": "Brave", "enabled": false },
     { "name": "Emacs", "enabled": false },
     { "name": "Firefox", "enabled": false },

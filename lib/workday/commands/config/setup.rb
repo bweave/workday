@@ -15,8 +15,8 @@ module Workday
           slack = setup_slack
           config.set(:slack, value: slack)
 
-          other_apps = select_apps_to_start_day_with
-          config.set(:other_apps, value: other_apps)
+          additional_apps = select_apps_to_start_day_with
+          config.set(:additional_apps, value: additional_apps)
 
           config.write force: true
           prompt.ok "✅ Config updated."
@@ -50,7 +50,7 @@ module Workday
         end
 
         def select_apps_to_start_day_with
-          apps = config.fetch(:other_apps)
+          apps = config.fetch(:additional_apps)
           all_apps = apps.map { |a| a["name"] }
           currently_enabled_apps = apps.select { |a| a["enabled"] }.map { |a| a["name"] }
           selected_apps = prompt.multi_select("Select apps you'd like to start your day with?", all_apps, default: currently_enabled_apps)
