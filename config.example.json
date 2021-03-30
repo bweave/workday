@@ -1,7 +1,8 @@
 {
   "slack": {
     "channel": "",
-    "icon_url": ""
+    "icon_url": "",
+    "me": ""
   },
   "additional_apps": [
     { "name": "Brave", "enabled": false },

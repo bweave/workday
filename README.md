@@ -55,8 +55,8 @@ workday help
 - [x] Make this thing a gem instead of a hand-rolled joby
 - [x] Use TTY components everywhere. Implement a base clase to inherit from like the TTY Command class.
 - [x] Implement a `bin/setup` and `bin/console`
-- [ ] Implement a DEBUG mode
-  - Post all Slack messages to @YOURSELF
+- [x] Implement a DEBUG mode
+  - [x] Post all Slack messages to @YOURSELF
   - What else?
 - [ ] Offer the option to handle pco-box in the ☁
   - create tmux session but don't attach, if needed: `tmux new-session -d -s foobar`

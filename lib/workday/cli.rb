@@ -6,6 +6,8 @@ module Workday
     # Error raised by this runner
     Error = Class.new(StandardError)
 
+    class_option :debug, type: :boolean, default: false, desc: "Run in debug mode: posts all Slack messages to @YOURSELF"
+
     desc "version", "workday version"
     def version
       require_relative "version"

@@ -28,6 +28,7 @@ module Workday
 
         def setup_slack
           ensure_slack_api_token_present
+          me = prompt.ask("What is your handle on Slack, e.g. @john_smith?", value: config.fetch(:slack, :me))
           channels = []
           spinner.run do
             slack_client.conversations_list(exclude_archived: true, limit: 100, types: "public_channel,private_channel,mpim,im") do |resp|
@@ -36,7 +37,7 @@ module Workday
           end
           channel = prompt.select("Select your team's Slack channel:", channels, default: config.fetch(:slack, :channel), filter: true)
           icon_url = prompt.ask("What's the URL to the icon you'd like to use when posting messages? (Optional)", value: config.fetch(:slack, :icon_url))
-          {channel: channel, icon_url: icon_url}
+          {channel: channel, icon_url: icon_url, me: me}
         end
 
         def ensure_slack_api_token_present

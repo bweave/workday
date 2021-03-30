@@ -13,7 +13,10 @@ module Workday
       end
 
       def execute
-        channel = options["channel"] || config["channel"] || prompt_for_channel
+        channel = options[:debug] && config["me"] ||
+          options["channel"] ||
+          config["channel"] ||
+          prompt_for_channel
         message = options["message"] || prompt_for_message
         post_message(channel, message)
       end
