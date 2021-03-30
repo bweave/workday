@@ -56,6 +56,10 @@ work_day help
 
 - [ ] Make this thing a gem instead of a hand-rolled joby
 - [ ] Use TTY components everywhere. Implement a base clase to inherit from like the TTY Command class.
+- [ ] Implement a `bin/setup` and `bin/console`
+- [ ] Implement a DEBUG mode
+  - Post all Slack messages to @YOURSELF
+  - What else?
 - [ ] Offer the option to handle pco-box in the ☁
   - create tmux session but don't attach, if needed: `tmux new-session -d -s foobar`
   - `ssh pco_box_cloud9 -t "tmux send-keys \"cd ~/pco-box && git pull\" Enter"`
