@@ -26,6 +26,7 @@ GEM
     gli (2.20.0)
     hashie (4.1.0)
     method_source (1.0.0)
+    minitest (5.14.4)
     multipart-post (2.1.1)
     pastel (0.8.0)
       tty-color (~> 0.5)
@@ -79,6 +80,7 @@ PLATFORMS
   x86_64-darwin-19
 
 DEPENDENCIES
+  minitest
   pry
   rake (~> 10.0)
   workday!

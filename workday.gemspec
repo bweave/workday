@@ -36,6 +36,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "tty-spinner", "~> 0.9.0"
   spec.add_dependency "tty-table", "~> 0.12.0"
 
-  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "minitest"
   spec.add_development_dependency "pry"
+  spec.add_development_dependency "rake", "~> 10.0"
 end
