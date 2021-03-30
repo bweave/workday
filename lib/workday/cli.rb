@@ -16,6 +16,7 @@ module Workday
     desc "start", "Start your Planning Center work day"
     method_option :help, aliases: "-h", type: :boolean, desc: "Display usage information"
     method_option :skip_slack, type: :boolean, aliases: "-s", desc: "Skip sending a message to Slack"
+    method_option :skip_update_apps, type: :boolean, aliases: "-a", desc: "Skip updating PCO app codebases"
     def start
       if options[:help]
         invoke :help, ["start"]

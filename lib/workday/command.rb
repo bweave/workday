@@ -1,5 +1,10 @@
 module Workday
   class Command
+    def command(**options)
+      require "tty-command"
+      TTY::Command.new(options)
+    end
+
     def configurator
       require "tty-config"
       config = TTY::Config.new
