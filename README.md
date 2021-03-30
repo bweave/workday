@@ -14,13 +14,9 @@ Start and end your workday at Planning Center with this handy little command lin
 
 ### Installation
 
-1. Clone this repo to the location of your choice, and ideally, make sure it's in your `PATH`.
-2. `bundle install`
-
-### Setup
-
-1. Copy `config.example.json` to `config.json`.
-2. Run `work_day configure` to set your prefs.
+1. Clone this repo to the location of your choice
+2. `bin/setup`
+3. (Optional) `bundle exec rake install:local`
 
 ### Slack API Token
 
@@ -34,29 +30,31 @@ export SLACK_API_TOKEN=MY_API_TOKEN
 
 ### Usage
 
+We'll assume that you've install the gem locally, and use the included binary `workday`. If you haven't installed the gem, simply replace `workday` with `./exe/workday`.
+
 Starting your work day is EzPz:
 
 ```sh
-work_day start
+workday start
 ```
 
 And ending it is, too:
 
 ```sh
-work_day end
+workday end
 ```
 
 Check out the help for more info on options:
 
 ```sh
-work_day help
+workday help
 ```
 
 ### TODO
 
 - [x] Make this thing a gem instead of a hand-rolled joby
 - [x] Use TTY components everywhere. Implement a base clase to inherit from like the TTY Command class.
-- [ ] Implement a `bin/setup` and `bin/console`
+- [x] Implement a `bin/setup` and `bin/console`
 - [ ] Implement a DEBUG mode
   - Post all Slack messages to @YOURSELF
   - What else?
