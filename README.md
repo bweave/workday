@@ -54,8 +54,8 @@ work_day help
 
 ### TODO
 
-- [ ] Make this thing a gem instead of a hand-rolled joby
-- [ ] Use TTY components everywhere. Implement a base clase to inherit from like the TTY Command class.
+- [x] Make this thing a gem instead of a hand-rolled joby
+- [x] Use TTY components everywhere. Implement a base clase to inherit from like the TTY Command class.
 - [ ] Implement a `bin/setup` and `bin/console`
 - [ ] Implement a DEBUG mode
   - Post all Slack messages to @YOURSELF
