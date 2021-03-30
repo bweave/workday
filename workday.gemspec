@@ -35,4 +35,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "tty-pager", "~> 0.14.0"
   spec.add_dependency "tty-spinner", "~> 0.9.0"
   spec.add_dependency "tty-table", "~> 0.12.0"
+
+  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "pry"
 end
