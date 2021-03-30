@@ -17,6 +17,8 @@ module Workday
     method_option :help, aliases: "-h", type: :boolean, desc: "Display usage information"
     method_option :skip_slack, type: :boolean, aliases: "-s", desc: "Skip sending a message to Slack"
     method_option :skip_update_apps, type: :boolean, aliases: "-a", desc: "Skip updating PCO app codebases"
+    method_option :skip_update_box, type: :boolean, aliases: "-b", desc: "Skip updating pco-box"
+    method_option :skip_webpack, type: :boolean, aliases: "-w", desc: "Skip running webpack when updating apps"
     def start
       if options[:help]
         invoke :help, ["start"]
