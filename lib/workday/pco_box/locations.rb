@@ -6,24 +6,29 @@ require_relative "../command"
 module Workday
   class PcoBox < Workday::Command
     module Locations
-      def self.from_config
+      def location_from_config
         location = Workday::Command.new.configurator.fetch(:pco_box, :location)
-        find_location_class_for(location)
-      end
-
-      def self.find_location_class_for(location)
         naively_titleized_location = location.to_s.gsub(/\b(?<!\w)[a-z]/) { |m| m.capitalize }
-        const_get(naively_titleized_location).new
+        self.class.const_get(naively_titleized_location)
       end
 
       class Local < Workday::Command
+        def initialize(options)
+          @options = options
+        end
+
         def run(cmd)
           command.run!(cmd, pty: true)
         end
+
+        private
+
+        attr_reader :options
       end
 
       class Cloud < Workday::Command
-        def initialize
+        def initialize(options)
+          @options = options
           # R&D-ed from https://github.com/ministrycentered/pco/blob/640b72c67698146f8072b5f87cc99ab638134622/libexec/pco-cloud9#L71
           data = JSON.parse(command.run("aws ec2 describe-instances --instance-ids='#{ENV["AWS_CLOUDBOX_EC2_INSTANCE_ID"]}' --region='#{ENV.fetch("AWS_CLOUDBOX_REGION", "us-east-1")}' --profile='planningcenter-dev'", only_output_on_error: true).out)
           @ip = data["Reservations"][0]["Instances"][0]["PublicIpAddress"]
@@ -35,6 +40,7 @@ module Workday
 
         private
 
+        attr_reader :options
         attr_reader :ip
 
         def reusable_ssh

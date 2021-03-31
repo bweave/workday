@@ -4,7 +4,9 @@ require_relative "command"
 require_relative "pco_box/locations"
 
 module Workday
-  module PcoApps
+  class PcoApps
+    include PcoBox::Locations
+
     APP_NAMES = %w[
       accounts
       api
@@ -25,21 +27,32 @@ module Workday
       webhooks
     ].freeze
 
-    def self.all
-      location = PcoBox::Locations.from_config
-      @all ||= APP_NAMES.map { |name| App.new(name, location) }
+    def initialize(options)
+      @options = options
+      @location = location_from_config.new(options)
     end
 
-    def self.before_update
+    def all
+      @all ||= APP_NAMES.map { |name| App.new(name, location, options) }
+    end
+
+    def before_update
+      prompt.say "⚙️  WIP-ing PCO apps"
       all.each(&:wip_it)
     end
 
-    def self.after_update
+    def after_update
+      prompt.say "⚙️  UNWIP-ing PCO apps"
       all.each(&:unwip_it)
     end
 
+    private
+
+    attr_reader :options
+    attr_reader :location
+
     class App < Workday::Command
-      def initialize(name, location)
+      def initialize(name, location, options)
         @name = name
         @location = location
         @dir = "~/Code/#{name}"
@@ -50,7 +63,7 @@ module Workday
         return if clean?
 
         @should_unwip = true
-        prompt.say "⚙️  Gonna WIP #{name} - #{working_branch} branch is dirty", color: :on_bright_red
+        prompt.say "⚙️  Gonna WIP #{name} - #{working_branch} branch is dirty", color: :bright_red
         cmd = [
           "cd #{dir}",
           "git add -A",
@@ -62,7 +75,7 @@ module Workday
       def unwip_it
         return unless should_unwip
 
-        prompt.say "⚙️  UN-WIP-ing #{name}", color: :on_bright_green
+        prompt.say "⚙️  UN-WIP-ing #{name}", color: :bright_green
         cmd = [
           "cd #{dir}",
           "git checkout #{working_branch}",

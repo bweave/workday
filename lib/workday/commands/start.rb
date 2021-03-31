@@ -15,15 +15,17 @@ module Workday
 
       def execute
         Slack.new(options).execute unless options[:skip_slack]
-        # Disable DND
-        PcoApps.before_update unless options[:skip_update_apps]
-        box = PcoBox.new
-        box.update unless options[:skip_update_box]
-        box.update_apps(options[:skip_webpack]) unless options[:skip_update_apps]
-        PcoApps.after_update unless options[:skip_update_apps]
-        box.start if options[:skip_update_box]
-        AdditionalApps.open
-        prompt.say "Happy hacking! 🙂", color: :on_bright_green
+        spinner.run("\n🙂 Happy hacking!") do |spinner|
+          pco_apps = PcoApps.new(options)
+          box = PcoBox.new(options)
+
+          pco_apps .before_update unless options[:skip_update_apps]
+          box.update unless options[:skip_update_box]
+          box.update_apps(options[:skip_webpack]) unless options[:skip_update_apps]
+          pco_apps.after_update unless options[:skip_update_apps]
+          box.start if options[:skip_update_box]
+          AdditionalApps.new(options).open
+        end
       end
 
       private

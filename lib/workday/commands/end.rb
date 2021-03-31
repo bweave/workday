@@ -14,11 +14,11 @@ module Workday
       end
 
       def execute
-        Slack.new("message" => signoff_message).execute unless options["skip_slack"]
-        # Enable DND
-        PcoBox.stop unless options[:skip_box_stop]
-        AdditionalApps.close unless options[:skip_apps_close]
-        prompt.say "👋 Until next time.", color: :on_bright_green
+        Slack.new(options.merge("message" => signoff_message)).execute unless options["skip_slack"]
+        spinner.run("\n👋 Until next time.") do
+          PcoBox.new(options).stop unless options[:skip_box_stop]
+          AdditionalApps.new(options).close unless options[:skip_apps_close]
+        end
       end
 
       private

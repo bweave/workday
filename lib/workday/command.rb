@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 module Workday
   class Command
-    def command(**options)
+    def command(**args)
       require "tty-command"
-      TTY::Command.new(options)
+      printer = options.debug? ? :pretty : :null
+      TTY::Command.new({printer: printer}.merge(args))
     end
 
     def configurator
@@ -35,9 +38,9 @@ module Workday
       @slack_client ||= Slack::Web::Client.new(token: ENV.fetch("SLACK_API_TOKEN"))
     end
 
-    def spinner(format: "dots")
+    def spinner(name = "", **args)
       require "tty-spinner"
-      TTY::Spinner.new(format: format)
+      TTY::Spinner.new(":spinner #{name}", {format: :dots}.merge(**args))
     end
 
     def table

@@ -19,6 +19,7 @@ module Workday
           prompt_for_channel
         message = options["message"] || prompt_for_message
         post_message(channel, message)
+        prompt.say "✉️  Slack message sent", color: :bright_green
       end
 
       private

@@ -61,6 +61,7 @@ workday help
   - What else?
 - [x] Offer the option to handle pco-box in the ☁
 - [ ] Implement adding apps to AdditionalApps thru the Config interface
+- [ ] Use magic predicate methods on options, e.g. `options.debug?`
 - [ ] Manage Do Not Disturb for MacOS and Ubuntu
   - https://github.com/joshpetit/toggle_dnd/blob/master/toggle_dnd
   - https://apple.stackexchange.com/questions/145487/how-to-enable-disable-do-not-disturb-from-shell-on-mavericks
