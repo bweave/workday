@@ -18,6 +18,9 @@ module Workday
           additional_apps = select_apps_to_start_day_with
           config.set(:additional_apps, value: additional_apps)
 
+          pco_box_location = prompt.select("Where are you running pco-box?", %w[Local Cloud], default: config.fetch(:pco_box, :location))
+          config.set(:pco_box, :location, value: pco_box_location)
+
           config.write force: true
           prompt.ok "✅ Config updated."
         end

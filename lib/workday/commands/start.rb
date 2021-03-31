@@ -14,12 +14,14 @@ module Workday
       end
 
       def execute
-        Slack.new({}).execute unless options[:skip_slack]
+        Slack.new(options).execute unless options[:skip_slack]
         # Disable DND
         PcoApps.before_update unless options[:skip_update_apps]
-        PcoBox.update unless options[:skip_update_box]
-        PcoBox.update_apps(options[:skip_webpack]) unless options[:skip_update_apps]
+        box = PcoBox.new
+        box.update unless options[:skip_update_box]
+        box.update_apps(options[:skip_webpack]) unless options[:skip_update_apps]
         PcoApps.after_update unless options[:skip_update_apps]
+        box.start if options[:skip_update_box]
         AdditionalApps.open
         prompt.say "Happy hacking! 🙂", color: :on_bright_green
       end

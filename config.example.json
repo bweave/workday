@@ -23,5 +23,6 @@
     { "name": "Things", "enabled": false },
     { "name": "Trello", "enabled": false },
     { "name": "Visual Studio Code", "enabled": false }
-  ]
+  ],
+  "pco_box": { "location": "local" }
 }

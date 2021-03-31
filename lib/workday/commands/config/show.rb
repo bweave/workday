@@ -13,6 +13,8 @@ module Workday
 
         def execute
           output = <<~OUT
+            PCO Box:
+            #{show_pco_box}
             Slack:
             #{show_slack}
             Additional Apps:
@@ -24,6 +26,12 @@ module Workday
         private
 
         attr_reader :config
+
+        def show_pco_box
+          table.new(config.fetch(:pco_box).to_a).render(:unicode) do |r|
+            r.border.separator = :each_row
+          end
+        end
 
         def show_slack
           data = config.fetch(:slack).merge(api_token: ENV["SLACK_API_TOKEN"]).to_a

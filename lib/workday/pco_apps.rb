@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "command"
+require_relative "pco_box/locations"
 
 module Workday
   module PcoApps
@@ -25,7 +26,8 @@ module Workday
     ].freeze
 
     def self.all
-      @all ||= APP_NAMES.map { |name| App.new(name) }
+      location = PcoBox::Locations.from_config
+      @all ||= APP_NAMES.map { |name| App.new(name, location) }
     end
 
     def self.before_update
@@ -37,10 +39,10 @@ module Workday
     end
 
     class App < Workday::Command
-      def initialize(name)
+      def initialize(name, location)
         @name = name
-        @dir = "#{ENV.fetch("HOME")}/Code/#{name}"
-        @working_branch = command.run("git symbolic-ref --short -q HEAD", chdir: dir).out.strip
+        @location = location
+        @dir = "~/Code/#{name}"
         @should_unwip = false
       end
 
@@ -49,28 +51,40 @@ module Workday
 
         @should_unwip = true
         prompt.say "⚙️  Gonna WIP #{name} - #{working_branch} branch is dirty", color: :on_bright_red
-        command.run "git add -A && git commit --no-verify -m 'WIP'", chdir: dir
+        cmd = [
+          "cd #{dir}",
+          "git add -A",
+          "git commit --no-verify -m 'WIP'",
+        ].join(";")
+        location.run(cmd)
       end
 
       def unwip_it
         return unless should_unwip
 
         prompt.say "⚙️  UN-WIP-ing #{name}", color: :on_bright_green
-        Dir.chdir(dir) do
-          command.run "git checkout #{working_branch}"
-          command.run "git log -n 1 | grep -q -c 'WIP' ; git reset HEAD~1"
-        end
+        cmd = [
+          "cd #{dir}",
+          "git checkout #{working_branch}",
+          "git log -n 1 | grep -q -c 'WIP' ; git reset HEAD~1",
+        ].join(";")
+        location.run(cmd)
       end
 
       private
 
       attr_reader :name
+      attr_reader :location
       attr_reader :dir
-      attr_reader :working_branch
       attr_reader :should_unwip
 
+      def working_branch
+        @working_branch ||= location.run("cd #{dir}; git symbolic-ref --short -q HEAD").out.strip
+      end
+
       def git_status
-        command.run("git status --porcelain", chdir: dir).out
+        cmd = ["cd #{dir}", "git status --porcelain"].join(";")
+        location.run(cmd).out
       end
 
       def clean?
