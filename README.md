@@ -8,6 +8,7 @@ Start and end your workday at Planning Center with this handy little command lin
 - Post a standup or normal message to your team's Slack channel.
 - Update `pco-box`
 - Update Planning Center apps to latest code
+- Handle `pco-box` running locally, or in the ☁
 - Handles wip/unwip committing uncommitted work on feature branches, in case you forgot. This helps avoid annoying "Git borked..." messages when updating apps.
 - Allows opening/closing additional apps for your workday, e.g. VSCode, Trello, etc.
 - Sign off in Slack at the end of your day, and shut down `pco-box`
