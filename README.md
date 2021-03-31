@@ -57,10 +57,11 @@ workday help
 - [x] Implement a `bin/setup` and `bin/console`
 - [x] Implement a DEBUG mode
   - [x] Post all Slack messages to @YOURSELF
-  - [ ] Quiet `command` output normally, show all of it with `--debug`
+  - [x] Quiet `command` output normally, show all of it with `--debug`
   - What else?
 - [x] Offer the option to handle pco-box in the ☁
-- [ ] Implement adding apps to AdditionalApps thru the Config interface
+- [x] Implement adding apps to AdditionalApps thru the Config interface
+- [ ] Keep config items alpha-sorted
 - [ ] Use magic predicate methods on options, e.g. `options.debug?`
 - [ ] Manage Do Not Disturb for MacOS and Ubuntu
   - https://github.com/joshpetit/toggle_dnd/blob/master/toggle_dnd

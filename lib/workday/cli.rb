@@ -47,7 +47,7 @@ module Workday
     end
 
     require_relative "commands/config"
-    register Workday::Commands::Config, "config", "config [SUBCOMMAND]", "Manage configuration option"
+    register Workday::Commands::Config, "config", "config [SUBCOMMAND]", "Manage configuration options"
 
     desc "slack", "Post a Slack message"
     method_option :help, aliases: "-h", type: :boolean, desc: "Display usage information"

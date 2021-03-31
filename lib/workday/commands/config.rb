@@ -26,6 +26,16 @@ module Workday
           Workday::Commands::Config::Show.new(options).execute
         end
       end
+
+      desc "add_app", "Add an application to start/end your day with"
+      def add_app
+        if options[:help]
+          invoke :help, ["add_app"]
+        else
+          require_relative "config/add_app"
+          Workday::Commands::Config::AddApp.new(options).execute
+        end
+      end
     end
   end
 end
