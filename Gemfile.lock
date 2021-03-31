@@ -33,7 +33,7 @@ GEM
     pry (0.14.0)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    rake (10.5.0)
+    rake (12.3.3)
     ruby2_keywords (0.0.4)
     slack-ruby-client (0.17.0)
       faraday (>= 1.0)
@@ -82,7 +82,7 @@ PLATFORMS
 DEPENDENCIES
   minitest
   pry
-  rake (~> 10.0)
+  rake (~> 12.3)
   workday!
 
 BUNDLED WITH
