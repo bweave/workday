@@ -69,7 +69,4 @@ workday help
 - [x] Keep config items alpha-sorted
 - [x] Use magic predicate methods on options, e.g. `options.debug?`
 - [ ] Make sure working branch is up on github and offer to WIP commit and push up uncommitted work when ending the day
-- [ ] Manage Do Not Disturb for MacOS and Ubuntu
-  - https://github.com/joshpetit/toggle_dnd/blob/master/toggle_dnd
-  - https://apple.stackexchange.com/questions/145487/how-to-enable-disable-do-not-disturb-from-shell-on-mavericks
 - [ ] Add tests
