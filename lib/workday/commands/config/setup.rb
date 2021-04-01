@@ -54,14 +54,14 @@ module Workday
         end
 
         def select_apps_to_start_day_with
-          apps = config.fetch(:additional_apps)
-          all_apps = apps.map { |a| a["name"] }
-          currently_enabled_apps = apps.select { |a| a["enabled"] }.map { |a| a["name"] }
+          apps = config.fetch(:additional_apps).map { |a| a.transform_keys!(&:to_sym) }
+          all_apps = apps.map { |a| a[:name] }
+          currently_enabled_apps = apps.select { |a| a[:enabled] }.map { |a| a[:name] }
           selected_apps = prompt.multi_select("Select apps you'd like to start your day with?", all_apps, default: currently_enabled_apps)
           apps.map do |app|
-            app["enabled"] = selected_apps.include?(app["name"])
+            app[:enabled] = selected_apps.include?(app[:name])
             app
-          end.sort { |app| app["name"] }
+          end.sort_by { |app| app[:name] }
         end
       end
     end

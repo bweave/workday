@@ -4,7 +4,7 @@ require_relative "command"
 require_relative "pco_box/locations"
 
 module Workday
-  class PcoApps
+  class PcoApps < Workday::Command
     include PcoBox::Locations
 
     APP_NAMES = %w[
