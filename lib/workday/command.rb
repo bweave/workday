@@ -18,6 +18,11 @@ module Workday
       config
     end
 
+    def font(face = :doom)
+      require "tty-font"
+      TTY::Font.new(face)
+    end
+
     def pager
       require "tty-pager"
       TTY::Pager.new

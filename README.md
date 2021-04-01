@@ -68,5 +68,6 @@ workday help
 - [x] Implement adding apps to AdditionalApps thru the Config interface
 - [x] Keep config items alpha-sorted
 - [x] Use magic predicate methods on options, e.g. `options.debug?`
+- [ ] Investigate using Thor::Group to handle series of tasks
 - [ ] Make sure working branch is up on github and offer to WIP commit and push up uncommitted work when ending the day
 - [ ] Add tests

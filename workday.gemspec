@@ -31,6 +31,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "thor", "~>1.1"
   spec.add_dependency "tty-command", "~> 0.10.0"
   spec.add_dependency "tty-config", "~> 0.4.0"
+  spec.add_dependency "tty-font", "~> 0.5.0"
   spec.add_dependency "tty-prompt", "~> 0.23.0"
   spec.add_dependency "tty-pager", "~> 0.14.0"
   spec.add_dependency "tty-spinner", "~> 0.9.0"

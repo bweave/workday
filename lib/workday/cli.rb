@@ -8,6 +8,8 @@ module Workday
     # Error raised by this runner
     Error = Class.new(StandardError)
 
+    package_name Command.new.pastel.bright_blue(Command.new.font.write("PCO Workday"))
+
     class_option :debug, type: :boolean, default: false, desc: "Run in debug mode: posts all Slack messages to @YOURSELF"
 
     desc "version", "workday version"
