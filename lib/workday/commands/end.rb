@@ -14,7 +14,7 @@ module Workday
       end
 
       def execute
-        Slack.new(options.merge("message" => signoff_message)).execute unless options["skip_slack"]
+        Slack.new(options.merge(message: signoff_message)).execute unless options[:skip_slack]
         spinner.run("\n👋 Until next time.") do
           PcoBox.new(options).stop unless options[:skip_box_stop]
           AdditionalApps.new(options).close unless options[:skip_apps_close]

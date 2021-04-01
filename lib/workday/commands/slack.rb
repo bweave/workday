@@ -9,15 +9,15 @@ module Workday
       def initialize(options)
         @options = options
         @client = slack_client
-        @config = configurator.fetch(:slack)
+        @config = configurator.fetch(:slack).transform_keys!(&:to_sym)
       end
 
       def execute
-        channel = options[:debug] && config["me"] ||
-          options["channel"] ||
-          config["channel"] ||
+        channel = options.debug? && config[:me] ||
+          options[:channel] ||
+          config[:channel] ||
           prompt_for_channel
-        message = options["message"] || prompt_for_message
+        message = options[:message] || prompt_for_message
         post_message(channel, message)
         prompt.say "✉️  Slack message sent", color: :bright_green
       end
@@ -65,7 +65,7 @@ module Workday
           channel: channel,
           text: message,
           as_user: true,
-          icon_url: config["icon_url"] || "",
+          icon_url: config[:icon_url] || "",
         )
       end
     end

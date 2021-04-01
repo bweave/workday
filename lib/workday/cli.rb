@@ -24,7 +24,7 @@ module Workday
     method_option :skip_update_box, type: :boolean, aliases: "-b", desc: "Skip updating pco-box"
     method_option :skip_webpack, type: :boolean, aliases: "-w", desc: "Skip running webpack when updating apps"
     def start
-      if options[:help]
+      if options.help?
         invoke :help, ["start"]
       else
         require_relative "commands/start"
@@ -38,7 +38,7 @@ module Workday
     method_option :skip_apps_close, type: :boolean, aliases: "-a", desc: "Skip close additional apps"
     method_option :skip_box_stop, type: :boolean, aliases: "-b", desc: "Skip box stop"
     def end
-      if options[:help]
+    if options.help?
         invoke :help, ["end"]
       else
         require_relative "commands/end"
@@ -54,7 +54,7 @@ module Workday
     method_option :channel, aliases: "-c", type: :string, desc: "Channel to post in"
     method_option :message, aliases: "-m", type: :string, desc: "Message to post"
     def slack
-      if options[:help]
+      if options.help?
         invoke :help, ["slack"]
       else
         require_relative "commands/slack"
