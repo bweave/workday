@@ -1,6 +1,8 @@
 Work Day
 ========
 
+![workday.png](/screenshots/workday.png)
+
 Start and end your workday at Planning Center with this handy little command line tool.
 
 ### Features
