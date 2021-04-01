@@ -61,7 +61,7 @@ module Workday
           apps.map do |app|
             app["enabled"] = selected_apps.include?(app["name"])
             app
-          end
+          end.sort { |app| app["name"] }
         end
       end
     end

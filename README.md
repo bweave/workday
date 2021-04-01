@@ -62,7 +62,7 @@ workday help
   - What else?
 - [x] Offer the option to handle pco-box in the ☁
 - [x] Implement adding apps to AdditionalApps thru the Config interface
-- [ ] Keep config items alpha-sorted
+- [x] Keep config items alpha-sorted
 - [ ] Use magic predicate methods on options, e.g. `options.debug?`
 - [ ] Manage Do Not Disturb for MacOS and Ubuntu
   - https://github.com/joshpetit/toggle_dnd/blob/master/toggle_dnd
