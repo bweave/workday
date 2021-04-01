@@ -13,6 +13,10 @@ Start and end your workday at Planning Center with this handy little command lin
 - Allows opening/closing additional apps for your workday, e.g. VSCode, Trello, etc.
 - Sign off in Slack at the end of your day, and shut down `pco-box`
 
+### Requirements
+
+- Latest [pco](https://github.com/ministrycentered/pco) installed
+
 ### Installation
 
 1. Clone this repo to the location of your choice
@@ -64,6 +68,8 @@ workday help
 - [x] Implement adding apps to AdditionalApps thru the Config interface
 - [x] Keep config items alpha-sorted
 - [ ] Use magic predicate methods on options, e.g. `options.debug?`
+- [ ] Make sure working branch is up on github and offer to WIP commit and push up uncommitted work when ending the day
 - [ ] Manage Do Not Disturb for MacOS and Ubuntu
   - https://github.com/joshpetit/toggle_dnd/blob/master/toggle_dnd
   - https://apple.stackexchange.com/questions/145487/how-to-enable-disable-do-not-disturb-from-shell-on-mavericks
+- [ ] Add tests
