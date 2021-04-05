@@ -57,6 +57,10 @@ Check out the help for more info on options:
 workday help
 ```
 
+### Bugs
+
+- [ ] Currently, you have to be in the `workday` dir to run config. Fix it!
+
 ### TODO
 
 - [x] Make this thing a gem instead of a hand-rolled joby
