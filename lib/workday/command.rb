@@ -13,7 +13,7 @@ module Workday
       config = TTY::Config.new
       config.filename = "config"
       config.extname = ".json"
-      config.append_path Dir.pwd
+      config.append_path(File.join(Dir.home, ".config", "workday"))
       config.read
       config
     end

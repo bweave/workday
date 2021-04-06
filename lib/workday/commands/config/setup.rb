@@ -18,7 +18,7 @@ module Workday
           additional_apps = select_apps_to_start_day_with
           config.set(:additional_apps, value: additional_apps)
 
-          pco_box_location = prompt.select("Where are you running pco-box?", %w[Local Cloud], default: config.fetch(:pco_box, :location))
+          pco_box_location = prompt.select("Where are you running pco-box?", %w[Local Cloud], value: config.fetch(:pco_box, :location))
           config.set(:pco_box, :location, value: pco_box_location)
 
           config.write force: true
@@ -38,7 +38,7 @@ module Workday
               channels << resp.channels
             end
           end
-          channel = prompt.select("Select your team's Slack channel:", channels, default: config.fetch(:slack, :channel), filter: true)
+          channel = prompt.select("Select your team's Slack channel:", channels, value: config.fetch(:slack, :channel), filter: true)
           icon_url = prompt.ask("What's the URL to the icon you'd like to use when posting messages? (Optional)", value: config.fetch(:slack, :icon_url))
           {channel: channel, icon_url: icon_url, me: me}
         end

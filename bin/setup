@@ -6,6 +6,7 @@ set -vx
 bundle install
 
 # Do any other automated setup that you need to do here
-[ ! -f config.json ] && cp config.example.json config.json
+mkdir -p "$HOME/.config/workday"
+[ ! -f "$HOME/.config/workday/config.json" ] && cp config.example.json "$HOME/.config/workday/config.json"
 ./exe/workday config setup
-ruby -e "require 'tty-prompt'; require 'pastel'; TTY::Prompt.new.ok '✅ All set!'"
+echo ✅ All set!
