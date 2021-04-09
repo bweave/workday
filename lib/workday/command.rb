@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "fileutils"
+
 module Workday
   class Command
     def command(**args)
@@ -14,6 +16,7 @@ module Workday
       config.filename = "config"
       config.extname = ".json"
       config.append_path(File.join(Dir.home, ".config", "workday"))
+      create_config_file if (!config.find_file)
       config.read
       config
     end
@@ -51,6 +54,14 @@ module Workday
     def table
       require "tty-table"
       TTY::Table
+    end
+
+    private
+
+    def create_config_file
+      config_dir_path = File.join(Dir.home, ".config", "workday")
+      FileUtils.mkdir_p(config_dir_path)
+      FileUtils.cp("./config.example.json", File.join(config_dir_path, "config.json"))
     end
   end
 end
